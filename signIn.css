@@ -1,0 +1,53 @@
+body {
+    background-image: url(background.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.container{
+
+    display: flex;
+    justify-content: center; 
+    align-items: center;    
+    height: 100vh;  
+    
+
+    
+}
+
+.card{
+    background-color: rgba(187, 152, 196, 0.3);
+    height: 380px;
+    width: 400px;
+    margin-bottom: -53px;
+    display: flex; 
+    justify-content: center;
+    align-items:center;
+    backdrop-filter: blur(10px);
+    
+    
+}
+
+
+   .cardimg {
+    background-image: linear-gradient(rgba(0,0,0,0.3)),url(sidecardpx.png);
+    height: 380px;
+    width: 400px;
+    margin-bottom: -53px;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-size: cover;   
+    background-position: center; 
+    border-radius: 0 40px 40px 0;
+    color: azure;
+    font-size: 50px;
+    font-family: 'Poppins', sans-serif;  
+    font-weight: 900;
+    text-shadow: 2px 2px 4px black;
+}
+
+
+
