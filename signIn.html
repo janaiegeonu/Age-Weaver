@@ -8,13 +8,40 @@
   
     <link rel="stylesheet" href="signIn.css">
 </head>
-<body>
-
+<body>      
     <div class="container">
+     <h1 class="heading"> Welcome!</h1>
 
-        <div class = "card"> </div>
-        <div class="cardimg"> Age-Weaver</div>
-    </div>
-   
+        <div class="login-module">
+
+            <div class="card">
+                <p class="signin"> Sign in</p> 
+                <form action="\signin" method="post">
+                    <label><i>Name</i> </label><br>
+                    <input type="text" id = "name" placeholder="Enter name" required >
+                    <br><br>
+                     <label><i>Phone</i> </label><br>
+                    <input type="text" id = "phone" placeholder="Enter phone number" required>
+                    <br><br>
+                     <label><i>Email</i> </label><br>
+                    <input type="email" id = "email" placeholder="Enter email" required >
+                    <br><br>
+                     <label><i>Password</i> </label><br>
+                    <input type="password" id = "pwd" placeholder="Enter Password" >
+                    <br><br>
+                    <hr>
+                    <button type="submit"> Create Account</button>
+                    
+                </form>
+            </div>
+            <div class="cardimg">              
+                <p class="imgtxt"> Age-Weaver</p>
+              
+                <p class="imgtxtsub"> know your exact Age..</p>
+            </div> 
+        </div>
+    </div> 
+
 </body>
+
 </html>
