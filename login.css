@@ -27,7 +27,7 @@ body {
 }
 
 .card {
-    background: linear-gradient( to bottom, #745d7e6b 0%, #1d0c277a 100%);
+    background: linear-gradient( to bottom, #6b55746b 0%, #15091d8a 100%);
     height: auto;
     min-height: 380px;
     width: 400px;
@@ -43,7 +43,7 @@ body {
 }
 
 .cardimg {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.514), rgba(0,0,0,0.3)), url(sidecardpx.png);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.473), rgba(0,0,0,0.3)), url(sidecardpx.png);
     height: auto;
     min-height: 380px;
     width: 400px;

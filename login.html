@@ -3,26 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Age-Weaver/sign in</title>
+    <title>Age-Weaver/Login</title>
 
   
-    <link rel="stylesheet" href="signIn.css">
+    <link rel="stylesheet" href="login.css">
 </head>
-<body>      
-    <div class="container">
+<body>
+ <div class="container">
      <h1 class="heading"> Welcome!</h1>
 
         <div class="login-module">
 
             <div class="card">
-                <p class="signin"> Sign in</p> 
-                <form action="\signin" method="post">
-                    <label><i>Name</i> </label>
-                    <input type="text" id = "name" placeholder="Enter name" required >
-                    <br><br>
-                     <label><i>Phone</i> </label>
-                    <input type="text" id = "phone" placeholder="Enter phone number" required>
-                    <br><br>
+                <p class="signin"> Login</p> 
+                <form action="\login" method="post">
+                   
                      <label><i>Email</i> </label>
                     <input type="email" id = "email" placeholder="Enter email" required >
                     <br><br>
@@ -30,10 +25,10 @@
                     <input type="password" id = "pwd" placeholder="Enter Password" >
                     <br><br>
                     <hr>
-                    <button  class="subbutton" type="submit"> Create Account</button>
+                    <button  class="subbutton" type="submit"> Login</button>
                      <button  class="resbutton" type="reset"> reset</button>
                      
-                     <p class="footertxt"> Already have an account? <a class="footerlink" href=""> Login </a></p>
+                     <p class="footertxt"> Don't have an Account? <a class="footerlink" href=""> Sign in </a></p>
 
                     
                 </form>
@@ -47,5 +42,3 @@
     </div> 
 
 </body>
-
-</html>
