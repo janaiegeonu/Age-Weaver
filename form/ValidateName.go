@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"unicode"
 )
 
@@ -42,18 +41,17 @@ func ValidateName(text string) error {
 		return errors.New("Error: alphabetic format only ")
 	}
 
+	count := 0
 
-	
+	for _, char := range text {
+		if char == '-' || char == '\'' {
+			count++
+		}
+	}
+	if count > 3 {
+		return errors.New("Error: invalid name")
+	}
+
 	return nil
-
-}
-
-func main() {
-
-	fmt.Println(ValidateName("janai"))
-	fmt.Println(ValidateName("janai egeonu"))
-	fmt.Println(ValidateName("janai egeonu123"))
-	fmt.Println(ValidateName("egeonu janai??"))
-	fmt.Println(ValidateName("D'janai jay"))
 
 }
