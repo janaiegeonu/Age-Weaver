@@ -1,5 +1,5 @@
 body {
-    background-image: url(background.png);
+    background-image: url('./images/background.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -43,7 +43,7 @@ body {
 }
 
 .cardimg {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.514), rgba(0,0,0,0.3)), url(sidecardpx.png);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.514), rgba(0,0,0,0.3)), url('./images/sidecardpx.png');
     height: auto;
     min-height: 380px;
     width: 400px;
@@ -200,5 +200,28 @@ hr {
 }
 .footerlink:hover {
      color: #b577ce;
-     font-size: 15px;
+     font-size: 20px;
 }
+.input-wrapper {
+    position: relative;
+    display: inline-block; 
+    width: 100%;           
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding-right: 35px;   
+    box-sizing: border-box; 
+}
+
+.svg {
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    right: 8px;            
+    top: 50%;             
+    transform: translateY(-50%);
+    pointer-events: none; 
+     
+}
+
