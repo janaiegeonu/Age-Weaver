@@ -18,4 +18,5 @@ func ValidateEmail(text string) error {
 func main() {
 
 	fmt.Println(ValidateEmail(""))
+	
 }
