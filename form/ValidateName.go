@@ -1,11 +1,11 @@
-package main
+package form
 
 import (
 	"errors"
 	"unicode"
 )
 
-func ValidateName(text string) error {
+func ValidateName(text string) (string, error) {
 
 	space := false
 
@@ -15,7 +15,7 @@ func ValidateName(text string) error {
 		}
 	}
 	if !space {
-		return errors.New("Error: please enter your fullname")
+		return "", errors.New("error: please enter your fullname")
 	}
 
 	Has_numeric := false
@@ -38,7 +38,7 @@ func ValidateName(text string) error {
 	}
 
 	if Has_symbols || Has_numeric {
-		return errors.New("Error: alphabetic format only ")
+		return "", errors.New("error: alphabetic format only ")
 	}
 
 	count := 0
@@ -49,9 +49,9 @@ func ValidateName(text string) error {
 		}
 	}
 	if count > 3 {
-		return errors.New("Error: invalid name")
+		return "", errors.New("error: invalid name")
 	}
 
-	return nil
+	return "", nil
 
 }
