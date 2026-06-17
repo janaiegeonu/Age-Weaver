@@ -1,5 +1,5 @@
 body {
-    background-image: url('./images/background.png');
+    background-image: url("/static/css/png/background.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -27,7 +27,7 @@ body {
 }
 
 .card {
-    background: linear-gradient( to bottom, #6b55746b 0%, #15091d8a 100%);
+    background: linear-gradient( to bottom, #745d7e6b 0%, #1d0c277a 100%);
     height: auto;
     min-height: 380px;
     width: 400px;
@@ -43,7 +43,7 @@ body {
 }
 
 .cardimg {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.473), rgba(0,0,0,0.3)), url('./images/sidecardpx.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.514), rgba(0,0,0,0.3)), url('/static/css/png/sidecardpx.png');
     height: auto;
     min-height: 380px;
     width: 400px;
@@ -200,7 +200,7 @@ hr {
 }
 .footerlink:hover {
      color: #b577ce;
-     font-size: 15px;
+     font-size: 20px;
 }
 .input-wrapper {
     position: relative;
@@ -224,3 +224,12 @@ hr {
     pointer-events: none; 
      
 }
+
+.error{
+    color: rgb(227, 198, 231);
+    font-size: 11px;
+    position: relative;
+    bottom: 18px;
+    margin-bottom: -22px;
+}
+

@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Age-Weaver/sign in</title>
+    <title>Age-Weaver/sign up</title>
 
   
-    <link rel="stylesheet" href="signIn.css">
-</head>
+<link rel="stylesheet" href="/static/css/signIn.css"></head>
 <body>      
     <div class="container">
      <h1 class="heading"> Welcome!</h1>
@@ -15,45 +14,49 @@
         <div class="login-module">
 
             <div class="card">
-                <p class="signin"> Sign in</p> 
-                <form action="\signin" method="post">
+                <p class="signin"> Sign up</p> 
+                <form action="/auth/register" method="post">
                     <label><i>Name</i></label>
                     <div class="input-wrapper">
                         <input name="username" type="text" id="name" placeholder="Enter name" required> 
-                        <img class="svg" src="SVG/user.svg" alt="User icon">
+                        <img class="svg" src="/static/SVG/user.svg" alt="User icon">
                     
                     </div>
+                     <p class="error"> {{.UsernameError}}</p>
                     <br><br>
                      <label><i>Phone</i> </label>
                      <div class="input-wrapper">
                      <input name="phone" type="text" id = "phone" placeholder="Enter phone number" required>
-                    <img class="svg" src="SVG/phone.svg" alt="User icon">
+                    <img class="svg" src="/static/SVG/phone.svg" alt="User icon">
 
                      </div>
+                      <p class="error">{{.PhoneError}}</p>
                     <br><br>
                     <label><i>Email</i> </label>
                     <div class="input-wrapper">
                     <input name="email" type="email" id = "email" placeholder="Enter email" required >
-                    <img class="svg" src="SVG/email.svg" alt="User icon">
+                    <img class="svg" src="/static/SVG/email.svg" alt="User icon">
 
 
                     </div>
+                    <p class="error">{{.EmailError}}</p>
                     
                     <br><br>
                      <label><i>Password</i> </label>
 
                      <div class="input-wrapper">
                     <input name="password" type="password" id = "pwd" placeholder="Enter Password" >
-                    <img class="svg" src="SVG/password-lock.svg" alt="User icon">
+                    <img class="svg" src="/static/SVG/password-lock.svg" alt="User icon">
 
 
                      </div>
+                     <p class="error">{{.PasswordError}}</p>
                     <br><br>
                     <hr>
                     <button  class="subbutton" type="submit"> Create Account</button>
                      <button  class="resbutton" type="reset"> reset</button>
                      
-                     <p class="footertxt"> Already have an account? <a class="footerlink" href=""> Login </a></p>
+                     <p class="footertxt"> Already have an account? <a class="footerlink" href="/login"> Login </a></p>
 
                     
                 </form>

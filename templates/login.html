@@ -6,7 +6,7 @@
     <title>Age-Weaver/Login</title>
 
   
-    <link rel="stylesheet" href="login.css">
+<link rel="stylesheet" href="/static/css/signIn.css"></head>
 </head>
 <body>
  <div class="container">
@@ -16,12 +16,12 @@
 
             <div class="card">
                 <p class="signin"> Login</p> 
-                <form action="\login" method="post">
+                <form action="/submit" method="post">
                    
                   <label><i>Email</i> </label>
                     <div class="input-wrapper">
                     <input type="email" id = "email" placeholder="Enter email" required >
-                    <img class="svg" src="SVG/email.svg" alt="User icon">
+                    <img class="svg" src="/static/SVG/email.svg" alt="User icon">
 
 
                     </div>
@@ -31,7 +31,7 @@
 
                      <div class="input-wrapper">
                     <input type="password" id = "pwd" placeholder="Enter Password" >
-                    <img class="svg" src="SVG/password-lock.svg" alt="User icon">
+                    <img class="svg" src="/static/SVG/password-lock.svg" alt="User icon">
 
 
                      </div>
@@ -40,7 +40,7 @@
                     <button  class="subbutton" type="submit"> Login</button>
                      <button  class="resbutton" type="reset"> reset</button>
                      
-                     <p class="footertxt"> Don't have an Account? <a class="footerlink" href=""> Sign in </a></p>
+                     <p class="footertxt"> Don't have an Account? <a class="footerlink" href="/"> Sign in </a></p>
 
                     
                 </form>

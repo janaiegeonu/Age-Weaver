@@ -15,12 +15,16 @@ type User struct {
 var Users []User
 
 func LoadData() error {
+
 	data, err := os.ReadFile("user.json")
 	if err != nil {
 		if os.IsNotExist(err) {
 			return nil
 		}
 		return err
+	}
+	if len(data) == 0 {
+		return nil
 	}
 	return json.Unmarshal(data, &Users)
 }

@@ -5,10 +5,23 @@ import (
 	"unicode"
 )
 
-func ValidatePhone(text string) (string,error) {
+func ValidatePhone(text string) (string, error) {
 
 	if len(text) < 10 {
-		return "",errors.New("error: invalid phone number length")
+		return "", errors.New("error: invalid phone number length")
+	}
+
+	for _, char := range text {
+		if unicode.IsDigit(char) {
+			continue
+		}
+
+		switch char {
+		case '+', '-', '(', ')', ' ':
+			continue
+		default:
+			return "", errors.New("error: invalid phone number")
+		}
 	}
 	Not_Numerics := false
 	for _, char := range text {
@@ -35,12 +48,12 @@ func ValidatePhone(text string) (string,error) {
 	if has_symbols {
 
 		if text[0] != '+' && text[0] != '(' {
-			return "",errors.New("error: invalid phone number")
+			return "", errors.New("error: invalid phone number")
 		}
 	}
 
-	if text[0] == '-' && text[len(text)-1] == '-' && text[len(text)-1] == '(' && text[len(text)-1] == ')' {
-		return "",errors.New("error: invalid phone number")
+	if text[0] == '-' || text[len(text)-1] == '-' || text[len(text)-1] == '(' || text[len(text)-1] == ')' {
+		return "", errors.New("error: invalid phone number")
 
 	}
 	count_hypen := 0
@@ -54,7 +67,7 @@ func ValidatePhone(text string) (string,error) {
 	}
 
 	if count_hypen > 3 {
-		return "",errors.New("error: invalid phone number")
+		return "", errors.New("error: invalid phone number")
 
 	}
 
@@ -65,7 +78,7 @@ func ValidatePhone(text string) (string,error) {
 	}
 
 	if count_plus > 1 {
-		return "",errors.New("error: invalid phone number")
+		return "", errors.New("error: invalid phone number")
 
 	}
 
@@ -76,10 +89,10 @@ func ValidatePhone(text string) (string,error) {
 	}
 
 	if count_bracket > 2 {
-		return "",errors.New("error: invalid phone number")
+		return "", errors.New("error: invalid phone number")
 
 	}
 
-	return "",nil
+	return "", nil
 
 }
