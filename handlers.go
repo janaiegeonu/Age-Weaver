@@ -8,6 +8,13 @@ import (
 	"text/template"
 )
 
+type Userdata struct {
+	Username string
+	Email    string
+	Phone    string
+}
+
+var secretKey = []byte("my-super-secret-key")
 var templates = template.Must(template.ParseFiles("templates/login.html", "templates/signIn.html"))
 
 func DisplaySignUp(w http.ResponseWriter, r *http.Request) {
@@ -105,11 +112,64 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func Login(w http.ResponseWriter, r *http.Request) {
-	templates.ExecuteTemplate(w, "login.html", nil)
+func loginHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == http.MethodGet {
+		templates.ExecuteTemplate(w, "login.html", nil)
+
+	}
+	if r.Method == http.MethodPost {
+
+		storage.LoadData()
+
+		email := r.FormValue("email")
+		password := r.FormValue("pwd")
+		var matchedUser storage.User
+
+		LogSuccessful := false
+		for _, user := range storage.Users {
+			if user.Email == email &&
+				user.Password == password {
+				matchedUser = user
+				LogSuccessful = true
+				break
+			}
+		}
+
+		if LogSuccessful {
+
+			User_Credentials := Userdata{
+				Username: matchedUser.Username,
+				Email:    matchedUser.Email,
+				Phone:    matchedUser.Phone,
+			}
+
+			cookieValue, err := createCookieValue(User(User_Credentials))
+
+			if err != nil {
+				http.Error(w, "Server error", http.StatusInternalServerError)
+				return
+			}
+
+			cookie := &http.Cookie{
+				Name:     "auth",
+				Value:    cookieValue,
+				HttpOnly: true,
+				Path:     "/",
+			}
+
+			http.SetCookie(w, cookie)
+
+			http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+			return
+
+		}
+		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+	}
 
 }
-func Submit(w http.ResponseWriter, r *http.Request) {
+
+func dashboardHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
@@ -123,7 +183,7 @@ func main() {
 
 	http.HandleFunc("/", DisplaySignUp)
 	http.HandleFunc("/auth/register", Register)
-	http.HandleFunc("/login", Login)
+	http.HandleFunc("/login", loginHandler)
 	fmt.Println("running server on http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }
