@@ -1,11 +1,12 @@
-package cookies
+package cookiesfunc
 
 import (
+	"Age-Weaver/storage"
 	"encoding/base64"
 	"encoding/json"
 )
 
-func createCookieValue(user User) (string, error) {
+func CreateCookieValue(user storage.User) (string, error) {
 
 	jsonData, err := json.Marshal(user)
 
@@ -15,7 +16,7 @@ func createCookieValue(user User) (string, error) {
 
 	encoded := base64.StdEncoding.EncodeToString(jsonData)
 
-	signature := sign(encoded)
+	signature := Sign(encoded)
 
 	finalValue := encoded + "." + signature
 

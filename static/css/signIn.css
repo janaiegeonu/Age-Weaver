@@ -203,16 +203,37 @@ hr {
      font-size: 20px;
 }
 .input-wrapper {
-    position: relative;
+  position: relative;
     display: inline-block; 
-    width: 100%;           
+    width: 100%;  
 }
 
 .input-wrapper input {
-    width: 100%;
+   width: 100%;
     padding-right: 35px;   
     box-sizing: border-box; 
 }
+
+.toggle-btn {
+
+  right: 12px;         
+  background: transparent; 
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  position: absolute;
+    right: 8px;            
+    top: 50%;             
+    transform: translateY(-50%);
+
+}
+
+.toggle-btn:hover {
+  opacity: 0.8;
+}
+
 
 .svg {
     width: 22px;
@@ -224,6 +245,7 @@ hr {
     pointer-events: none; 
      
 }
+
 
 .error{
     color: rgb(227, 198, 231);

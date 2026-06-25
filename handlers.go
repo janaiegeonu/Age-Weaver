@@ -1,11 +1,14 @@
 package main
 
 import (
+	"Age-Weaver/cookiesfunc"
 	"Age-Weaver/form"
 	"Age-Weaver/storage"
 	"fmt"
 	"net/http"
 	"text/template"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Userdata struct {
@@ -14,8 +17,7 @@ type Userdata struct {
 	Phone    string
 }
 
-var secretKey = []byte("my-super-secret-key")
-var templates = template.Must(template.ParseFiles("templates/login.html", "templates/signIn.html"))
+var templates = template.Must(template.ParseFiles("templates/login.html", "templates/signIn.html", "templates/dashboard.html"))
 
 func DisplaySignUp(w http.ResponseWriter, r *http.Request) {
 
@@ -30,13 +32,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Bad Method value", http.StatusMethodNotAllowed)
 		return
-	}
-
-	type User struct {
-		Username string
-		Phone    string
-		Email    string
-		Password string
 	}
 
 	type PageData struct {
@@ -56,15 +51,21 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	EmailData := r.FormValue("email")
 	PasswordData := r.FormValue("password")
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(PasswordData), bcrypt.DefaultCost)
+	if err != nil {
+		http.Error(w, "Server error securing password", http.StatusInternalServerError)
+		return
+	}
+
 	details := storage.User{
 		Username: UsernameData,
 		Phone:    phoneData,
 		Email:    EmailData,
-		Password: PasswordData,
+		Password: string(hashedPassword),
 	}
 
 	var NameErr, EmailErr, PhoneErr, PasswordErr error
-	_, err := form.ValidateName(UsernameData)
+	_, err = form.ValidateName(UsernameData)
 	if err != nil {
 		NameErr = err
 	}
@@ -109,6 +110,27 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "failed to save user", http.StatusInternalServerError)
 		return
 	}
+	User_Credentials := storage.User{
+		Username: details.Username,
+		Email:    details.Email,
+		Phone:    details.Phone,
+	}
+
+	cookieValue, err := cookiesfunc.CreateCookieValue(User_Credentials)
+	if err != nil {
+		http.Error(w, "Server error", http.StatusInternalServerError)
+		return
+	}
+
+	cookie := &http.Cookie{
+		Name:     "auth",
+		Value:    cookieValue,
+		HttpOnly: true,
+		Path:     "/",
+	}
+
+	http.SetCookie(w, cookie)
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 
 }
 
@@ -128,23 +150,26 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 		LogSuccessful := false
 		for _, user := range storage.Users {
-			if user.Email == email &&
-				user.Password == password {
-				matchedUser = user
-				LogSuccessful = true
-				break
+			if user.Email == email {
+				// VERIFY HASHED PASSWORD HERE
+				err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+				if err == nil {
+					matchedUser = user
+					LogSuccessful = true
+					break
+				}
 			}
 		}
 
 		if LogSuccessful {
 
-			User_Credentials := Userdata{
+			User_Credentials := storage.User{
 				Username: matchedUser.Username,
 				Email:    matchedUser.Email,
 				Phone:    matchedUser.Phone,
 			}
 
-			cookieValue, err := createCookieValue(User(User_Credentials))
+			cookieValue, err := cookiesfunc.CreateCookieValue((User_Credentials))
 
 			if err != nil {
 				http.Error(w, "Server error", http.StatusInternalServerError)
@@ -171,6 +196,26 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 func dashboardHandler(w http.ResponseWriter, r *http.Request) {
 
+	cookie, err := r.Cookie("auth")
+
+	if err != nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	user, err := cookiesfunc.VerifyCookie(cookie.Value)
+
+	if err != nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	err = templates.ExecuteTemplate(w, "dashboard.html", user)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
 }
 
 func main() {
@@ -184,6 +229,7 @@ func main() {
 	http.HandleFunc("/", DisplaySignUp)
 	http.HandleFunc("/auth/register", Register)
 	http.HandleFunc("/login", loginHandler)
+	http.HandleFunc("/dashboard", dashboardHandler)
 	fmt.Println("running server on http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }

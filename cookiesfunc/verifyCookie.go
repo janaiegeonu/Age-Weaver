@@ -1,13 +1,14 @@
-package cookies
+package cookiesfunc
 
 import (
+	"Age-Weaver/storage"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"strings"
 )
 
-func verifyCookie(value string) (*User, error) {
+func VerifyCookie(value string) (*storage.User, error) {
 
 	parts := strings.Split(value, ".")
 
@@ -18,7 +19,7 @@ func verifyCookie(value string) (*User, error) {
 	encodedData := parts[0]
 	receivedSignature := parts[1]
 
-	expectedSignature := sign(encodedData)
+	expectedSignature := Sign(encodedData)
 
 	if expectedSignature != receivedSignature {
 		return nil, fmt.Errorf("invalid signature")
@@ -30,7 +31,7 @@ func verifyCookie(value string) (*User, error) {
 		return nil, err
 	}
 
-	var user User
+	var user storage.User
 
 	err = json.Unmarshal(decodedData, &user)
 
