@@ -162,6 +162,8 @@ hr {
         border-color: rgb(245, 213, 245);
         font-size: 15px;
         box-shadow: 0px 0px 8px 2px rgba(230, 93, 248, 0.281);
+         position: relative;
+    bottom: 15px;
 
 
 
@@ -188,6 +190,8 @@ hr {
     background: linear-gradient(to bottom, rgb(108, 94, 121) 20%, #bfb3c4 100%);
     text-transform: capitalize;
     text-decoration: underline;
+     position: relative;
+    bottom: 19px;
 }
 .footertxt{
     color: #bfb3c4;
@@ -197,10 +201,11 @@ hr {
 }
 .footerlink {
     color: #773f8d;
+     font-size: 15px;
 }
 .footerlink:hover {
-     color: #b577ce;
-     font-size: 20px;
+     color: #c985e4;
+     
 }
 .input-wrapper {
   position: relative;

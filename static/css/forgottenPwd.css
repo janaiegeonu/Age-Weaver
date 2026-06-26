@@ -1,5 +1,5 @@
 body {
-    background-image: url("/static/css/png/background.png");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.151), rgba(0, 0, 0, 0.5)), url("/static/css/png/background.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -27,7 +27,7 @@ body {
 }
 
 .card {
-    background: linear-gradient( to bottom, #6b55746b 0%, #15091d8a 100%);
+    background: linear-gradient( to bottom, #6b55746b 0%, #230f3096 100%);
     height: auto;
     min-height: 380px;
     width: 400px;
@@ -42,27 +42,10 @@ body {
     box-sizing: border-box;
 }
 
-.cardimg {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.473), rgba(0,0,0,0.3)), url('/static/css/png/sidecardpx.png');
-    height: auto;
-    min-height: 380px;
-    width: 400px;
-    min-width: 400px;
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center;
-    align-items: center;
-    background-repeat: no-repeat;
-    background-size: cover;       
-    background-position: center;     
-    font-family: 'Poppins', sans-serif;      
-    box-sizing: border-box;
-    padding: 40px 20px;
-}
 
 
 .heading {
-   color: rgb(227, 204, 230);
+   color: rgb(240, 220, 243);
     font-size: 35px;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
@@ -92,24 +75,6 @@ label {
     font-size: 14px;
 }
 
-.imgtxt {
-    color: aliceblue;
-    text-align: center;
-    font-size: 50px;
-    font-weight: 900;
-    text-shadow: 2px 2px 4px black;
-    margin: 0;
-    margin-top: 12px;
-}
-
-.imgtxtsub {
-    color: aliceblue;
-    text-align: center;
-    font-size: 18px;
-    margin-top: 5px;
-    
-    
-}
 
 input {
     width: 100%; 
@@ -168,45 +133,10 @@ hr {
 
 
 }
-.resbutton {
-     width: 220px;
-    height: 40px;
-    justify-content: center;
-    justify-items: center;
-    margin: auto;
-    text-align: center;
-    border-radius: 14px;
-    font-size: 14px;
-    font-weight: bold;
-    background: linear-gradient(to bottom, rgb(66, 54, 77) 20%, #998d9e 100%);
-    color: white;
-    border-color: rgba(245, 213, 245, 0.651);
-    position: relative;
-    bottom: 17px;
-   
-}
 
-.resbutton:hover {
-    background: linear-gradient(to bottom, rgb(108, 94, 121) 20%, #bfb3c4 100%);
-    text-transform: capitalize;
-    text-decoration: underline;
-     position: relative;
-    bottom: 19px;
-}
-.footertxt{
-    color: #bfb3c4;
-    font-size: 14px;
-    position: relative;
-    bottom: 10px;
-}
-.footerlink {
-    color: #773f8d;
-     font-size: 15px;
-}
-.footerlink:hover {
-     color: #c783e2;
+
      
-}
+
 .input-wrapper {
   position: relative;
     display: inline-block; 
@@ -219,25 +149,7 @@ hr {
     box-sizing: border-box; 
 }
 
-.toggle-btn {
 
-  right: 12px;         
-  background: transparent; 
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  position: absolute;
-    right: 8px;            
-    top: 50%;             
-    transform: translateY(-50%);
-
-}
-
-.toggle-btn:hover {
-  opacity: 0.8;
-}
 
 
 .svg {
@@ -250,14 +162,28 @@ hr {
     pointer-events: none; 
      
 }
-
-.forgot {
-
-    font-size: 13px;
-    color: #d5cbda;
-    text-decoration: none ;
+.pwdrecov{
+    color: #e7d7ee;
+    font-size: 15px;
+    
 }
-.forgot:hover {
-    text-decoration: underline;
-    text-transform: capitalize;
+.pwdrecov1{
+    color: #e8d5f0;
+    font-size: 15px;
+    position: relative;
+    bottom: 7px;
+    
 }
+.pwdrecov-wrapper{
+
+    position: relative;
+    bottom: 4px;
+    left: 20px;
+
+}
+.hr-pwd{
+    color:rgb(190, 147, 223);
+    position: relative;
+    bottom: 10px;
+}
+

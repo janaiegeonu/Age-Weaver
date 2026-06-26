@@ -18,7 +18,7 @@ type Userdata struct {
 }
 
 func renderTemplate(w http.ResponseWriter, tmplName string, data interface{}) {
-	tmpl, err := template.ParseFiles("templates/login.html", "templates/signIn.html", "templates/dashboard.html")
+	tmpl, err := template.ParseFiles("templates/login.html", "templates/signIn.html", "templates/dashboard.html", "templates/forgottenPwd.html")
 	if err != nil {
 		http.Error(w, "Template Parsing Error: "+err.Error(), http.StatusInternalServerError)
 		return
@@ -203,6 +203,29 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == http.MethodGet {
+		renderTemplate(w, "forgottenPwd.html", nil)
+	}
+
+	type recoveryerror struct {
+		Error error
+	}
+	email := r.FormValue("email")
+
+	Valid_Email := false
+	for _, user := range storage.Users {
+		if user.Email == email {
+			Valid_Email = true
+			break
+		}
+	}
+	if Valid_Email {
+
+	}
+}
+
 func dashboardHandler(w http.ResponseWriter, r *http.Request) {
 
 	cookie, err := r.Cookie("auth")
@@ -235,6 +258,7 @@ func main() {
 	http.HandleFunc("/auth/register", Register)
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/dashboard", dashboardHandler)
+	http.HandleFunc("/forgot", ForgottenPassword)
 	fmt.Println("running server on http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }

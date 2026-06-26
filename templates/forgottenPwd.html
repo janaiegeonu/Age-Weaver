@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age-Weaver/Login</title>
+
+  
+<link rel="stylesheet" href="/static/css/forgottenPwd.css"></head>
+<body>
+ <div class="container">
+     <h1 class="heading"> Recover Password </h1>
+
+        <div class="login-module">
+
+            <div class="card">
+                <div class="pwdrecov-wrapper">
+                <p class="pwdrecov"> Enter the email address associated with your account.</p>
+                <p class="pwdrecov1"> We will send you a 6-digit verification code to reset your password.</p>
+
+                </div>
+                <hr class="hr-pwd">
+              <form action="/forgot" method="post">                   
+                  <label>Enter your Email:</label>
+                    <div class="input-wrapper">
+                    <input type="email" name = "email" placeholder="email@example.com" required >
+                    <img class="svg" src="/static/SVG/email.svg" alt="User icon">
+
+
+                    </div>
+                 
+                    <br><br>
+                    <hr>
+                    <button  class="subbutton" type="submit"> Send</button>
+                    
+                </form>
+            </div>
+           
+        </div>
+    </div> 
+
+</body>

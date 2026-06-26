@@ -1,0 +1,1 @@
+Subject: Your password reset codeWe received a request to reset the password for your account.Your verification code is:[XXXXXX]This code will expire in 15 minutes. If you didn't request this change, please ignore this email.
