@@ -17,15 +17,24 @@ type Userdata struct {
 	Phone    string
 }
 
-var templates = template.Must(template.ParseFiles("templates/login.html", "templates/signIn.html", "templates/dashboard.html"))
-
+func renderTemplate(w http.ResponseWriter, tmplName string, data interface{}) {
+	tmpl, err := template.ParseFiles("templates/login.html", "templates/signIn.html", "templates/dashboard.html")
+	if err != nil {
+		http.Error(w, "Template Parsing Error: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	err = tmpl.ExecuteTemplate(w, tmplName, data)
+	if err != nil {
+		http.Error(w, "Template Execution Error: "+err.Error(), http.StatusInternalServerError)
+	}
+}
 func DisplaySignUp(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodGet {
 		http.Error(w, "Bad Method value", http.StatusMethodNotAllowed)
 		return
 	}
-	templates.ExecuteTemplate(w, "signIn.html", nil)
+	renderTemplate(w, "signIn.html", nil)
 }
 func Register(w http.ResponseWriter, r *http.Request) {
 
@@ -101,7 +110,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		EmailErr != nil ||
 		PasswordErr != nil {
 
-		templates.ExecuteTemplate(w, "signIn.html", data)
+		renderTemplate(w, "signIn.html", data)
 		return
 	}
 
@@ -137,7 +146,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodGet {
-		templates.ExecuteTemplate(w, "login.html", nil)
+		renderTemplate(w, "login.html", nil)
 
 	}
 	if r.Method == http.MethodPost {
@@ -210,11 +219,7 @@ func dashboardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = templates.ExecuteTemplate(w, "dashboard.html", user)
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+	renderTemplate(w, "dashboard.html", user)
 
 }
 
