@@ -6,14 +6,18 @@
     <title>Age-Weaver/Login</title>
 
   
-<link rel="stylesheet" href="/static/css/forgottenPwd.css"></head>
+<link rel="stylesheet" href="/static/css/forgottenPwd.css?v=1.1">
 <body>
  <div class="container">
-     <h1 class="heading"> Recover Password </h1>
+     <h1 class="heading"> Recover Account </h1>
 
         <div class="login-module">
 
             <div class="card">
+                {{if .Error}}
+                <p class="error">{{.Error}}</p>
+                {{end}}
+                <p class="signin"> Verify Email</p>
                 <div class="pwdrecov-wrapper">
                 <p class="pwdrecov"> Enter the email address associated with your account.</p>
                 <p class="pwdrecov1"> We will send you a 6-digit verification code to reset your password.</p>

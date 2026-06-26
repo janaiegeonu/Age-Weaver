@@ -23,13 +23,12 @@ body {
     align-items: stretch; 
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); 
     overflow: hidden;
-    border-radius: 40px;
+    border-radius: 20px;
 }
 
 .card {
-    background: linear-gradient( to bottom, #6b55746b 0%, #230f3096 100%);
-    height: auto;
-    min-height: 380px;
+    background: linear-gradient( to bottom, #6b557496 0%, #230f3096 100%);
+    height: 430px;
     width: 400px;
     min-width: 400px;
     display: flex; 
@@ -40,6 +39,7 @@ body {
     -webkit-backdrop-filter: blur(10px);
     padding: 40px 20px; 
     box-sizing: border-box;
+    
 }
 
 
@@ -54,11 +54,12 @@ body {
 }
 
 .signin {
-    color: aliceblue;
+    color: rgb(235, 222, 231);
     text-align: center;
     font-size: 20px;
-    text-decoration: underline;
     margin: 0 0 20px 0; 
+    font-family:fantasy;
+    font-weight: 700;
 }
 
 form {
@@ -117,7 +118,7 @@ hr {
     background: linear-gradient(to bottom, rgb(28, 12, 43) 20%, #9a77a8 100%);
     color: white;
     border-color: rgba(245, 213, 245, 0.651);
-    bottom: 10px;
+    bottom: 40px;
     position: relative;
 }
 
@@ -127,15 +128,13 @@ hr {
         border-color: rgb(245, 213, 245);
         font-size: 15px;
         box-shadow: 0px 0px 8px 2px rgba(230, 93, 248, 0.281);
-         bottom: 14px;
+         bottom: 47px;
     position: relative;
 
 
 
 }
 
-
-     
 
 .input-wrapper {
   position: relative;
@@ -171,19 +170,33 @@ hr {
     color: #e8d5f0;
     font-size: 15px;
     position: relative;
-    bottom: 7px;
+    bottom: 10px;
     
 }
 .pwdrecov-wrapper{
 
     position: relative;
-    bottom: 4px;
+    bottom: 13px;
     left: 20px;
 
 }
 .hr-pwd{
     color:rgb(190, 147, 223);
     position: relative;
-    bottom: 10px;
+    bottom: 27px;
+}
+
+.error{
+
+    color: rgb(247, 69, 69);
+    background-color: transparent;
+    border: 1px solid rgb(247, 69, 69);
+    padding: 5px;
+    box-shadow: 0px 0px 8px 2px rgba(247, 30, 30, 0.5);
+
+}
+
+.error:empty {
+    display: none;
 }
 

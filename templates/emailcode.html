@@ -1,11 +1,3 @@
-Subject: Your password reset codeWe received a request to reset the password for your account.Your verification code is:[XXXXXX]This code will expire in 15 minutes. If you didn't request this change, please ignore this email.
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,13 +6,18 @@ Subject: Your password reset codeWe received a request to reset the password for
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; margin: 0;">
     <div style="max-width: 600px; background-color: #ffffff; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-        <h1 style="color: #333333; font-size: 24px; margin-bottom: 20px;">Hello!</h1>
+            <h2 style="color: #6e269e; text-align: center;">Age-Weaver</h2>
+
+        <h1 style="color: #333333; font-size: 24px; margin-bottom: 20px;">Hello {{.Username}}</h1>
         <p style="color: #666666; font-size: 16px; line-height: 1.5;">Your requested confirmation code is below:</p>
-        <div style="background-color: #e8f0fe; border-left: 4px solid #1a73e8; padding: 15px; margin: 20px 0; font-family: monospace; font-size: 18px; font-weight: bold; color: #1a73e8;">
+        <div style="background-color: #e6ddf1; border-left: 4px solid #6e248b; padding: 15px; margin: 20px 0; font-family: monospace; font-size: 18px; font-weight: bold; color: #772591;">
             {{.Code}}
         </div>
         <p style="color: #999999; font-size: 12px; margin-top: 30px; border-top: 1px solid #eeeeee; padding-top: 15px;">
             If you did not request this, please ignore this email.
+        </p>
+        <p style="color: #999999; font-size: 13px; margin-top: 4px; border-top: 5px solid #e1d6eb; padding-top: 15px;">
+            @Age-Weaver Community
         </p>
     </div>
 </body>

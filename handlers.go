@@ -4,11 +4,15 @@ import (
 	"Age-Weaver/cookiesfunc"
 	"Age-Weaver/form"
 	"Age-Weaver/storage"
+	"bytes"
+	"crypto/rand"
+	"encoding/hex"
 	"fmt"
 	"net/http"
 	"text/template"
 
 	"golang.org/x/crypto/bcrypt"
+	"gopkg.in/mail.v2"
 )
 
 type Userdata struct {
@@ -17,8 +21,15 @@ type Userdata struct {
 	Phone    string
 }
 
+func GeneratePin() string {
+
+	bytes := make([]byte, 3)
+	rand.Read(bytes)
+	return hex.EncodeToString(bytes)
+}
+
 func renderTemplate(w http.ResponseWriter, tmplName string, data interface{}) {
-	tmpl, err := template.ParseFiles("templates/login.html", "templates/signIn.html", "templates/dashboard.html", "templates/forgottenPwd.html")
+	tmpl, err := template.ParseFiles("templates/login.html", "templates/signIn.html", "templates/dashboard.html", "templates/forgottenPwd.html", "templates/code.html")
 	if err != nil {
 		http.Error(w, "Template Parsing Error: "+err.Error(), http.StatusInternalServerError)
 		return
@@ -26,6 +37,7 @@ func renderTemplate(w http.ResponseWriter, tmplName string, data interface{}) {
 	err = tmpl.ExecuteTemplate(w, tmplName, data)
 	if err != nil {
 		http.Error(w, "Template Execution Error: "+err.Error(), http.StatusInternalServerError)
+		return
 	}
 }
 func DisplaySignUp(w http.ResponseWriter, r *http.Request) {
@@ -203,27 +215,92 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+type Emaildata struct {
+	Username string
+	Code     string
+}
+
 func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodGet {
 		renderTemplate(w, "forgottenPwd.html", nil)
+		return
 	}
 
 	type recoveryerror struct {
-		Error error
+		Error string
 	}
 	email := r.FormValue("email")
+
+	var receiver string
+	var username string
 
 	Valid_Email := false
 	for _, user := range storage.Users {
 		if user.Email == email {
 			Valid_Email = true
+			receiver = user.Email
+			username = user.Username
 			break
 		}
-	}
-	if Valid_Email {
+		if user.Email != email {
+
+		}
 
 	}
+
+	if Valid_Email {
+
+		code := GeneratePin()
+
+		data := Emaildata{
+			Username: username,
+			Code:     code,
+		}
+
+		tmpl, err := template.ParseFiles("templates/emailcode.html")
+		if err != nil {
+			fmt.Println("Error parsing template:", err)
+			http.Error(w, "Internal server error", 500)
+			return
+		}
+
+		var bodyBuffer bytes.Buffer
+		if err := tmpl.Execute(&bodyBuffer, data); err != nil {
+			fmt.Println("Error executing template:", err)
+			return
+		}
+		m := mail.NewMessage()
+		m.SetHeader("From", "egeonujanai@gmail.com")
+		m.SetHeader("To", receiver)
+		m.SetHeader("Subject", " Age-Weaver (Confirmation Code)")
+		m.SetBody("text/html", bodyBuffer.String())
+		d := mail.NewDialer("smtp.gmail.com", 587, "egeonujanai@gmail.com", "giwg nrsr xqui xfrq")
+
+		err = d.DialAndSend(m)
+		if err != nil {
+			http.Error(w, "email not sent ", 500)
+			return
+
+		}
+		http.Redirect(w, r, "/code", http.StatusSeeOther)
+		return
+
+	} else {
+
+		errordata := recoveryerror{
+			Error: "email credentials not found",
+		}
+		renderTemplate(w, "forgottenPwd.html", errordata)
+	}
+}
+
+func VerifyPin(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == http.MethodGet {
+
+	}
+
 }
 
 func dashboardHandler(w http.ResponseWriter, r *http.Request) {
@@ -259,6 +336,7 @@ func main() {
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/dashboard", dashboardHandler)
 	http.HandleFunc("/forgot", ForgottenPassword)
+	http.HandleFunc("/code", VerifyPin)
 	fmt.Println("running server on http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }
