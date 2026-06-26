@@ -14,9 +14,6 @@
         <div class="login-module">
 
             <div class="card">
-                {{if .Error}}
-                <p class="error">{{.Error}}</p>
-                {{end}}
                 <p class="signin"> Verify Email</p>
                 <div class="pwdrecov-wrapper">
                 <p class="pwdrecov"> Enter the email address associated with your account.</p>
@@ -25,16 +22,17 @@
                 </div>
                 <hr class="hr-pwd">
               <form action="/forgot" method="post">                   
-                  <label>Enter your Email:</label>
+                 
                     <div class="input-wrapper">
+                         <label>Enter your Email:</label>
                     <input type="email" name = "email" placeholder="email@example.com" required >
                     <img class="svg" src="/static/SVG/email.svg" alt="User icon">
 
 
                     </div>
-                 
-                    <br><br>
-                    <hr>
+                    {{if .Error}}
+                    <p class="error toast-message">{{.Error}}</p>
+                    {{end}}
                     <button  class="subbutton" type="submit"> Send</button>
                     
                 </form>

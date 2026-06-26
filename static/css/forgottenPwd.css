@@ -118,7 +118,7 @@ hr {
     background: linear-gradient(to bottom, rgb(28, 12, 43) 20%, #9a77a8 100%);
     color: white;
     border-color: rgba(245, 213, 245, 0.651);
-    bottom: 40px;
+    bottom: 10px;
     position: relative;
 }
 
@@ -128,7 +128,7 @@ hr {
         border-color: rgb(245, 213, 245);
         font-size: 15px;
         box-shadow: 0px 0px 8px 2px rgba(230, 93, 248, 0.281);
-         bottom: 47px;
+         bottom: 14px;
     position: relative;
 
 
@@ -139,7 +139,8 @@ hr {
 .input-wrapper {
   position: relative;
     display: inline-block; 
-    width: 100%;  
+    width: 100%; 
+    bottom: 9px; 
 }
 
 .input-wrapper input {
@@ -186,17 +187,70 @@ hr {
     bottom: 27px;
 }
 
-.error{
-
+/* 1. Base State: Hidden by default so it stays closed when the animation ends */
+/* 1. Base State: Hidden when there is NO animation running */
+.error {
     color: rgb(247, 69, 69);
     background-color: transparent;
-    border: 1px solid rgb(247, 69, 69);
-    padding: 5px;
-    box-shadow: 0px 0px 8px 2px rgba(247, 30, 30, 0.5);
-
+    border: none;
+    padding: 0px 10px;
+    margin: 0;
+    font-size: 13px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: none;
+    
+    display: none;
+    max-height: 0px;
+    overflow: hidden;
 }
+
+
+.toast-message {
+    display: block !important; 
+    animation: fadeOutMsg 3s ease-in-out forwards;
+}
+
 
 .error:empty {
-    display: none;
+    display: none !important;
 }
+
+@keyframes fadeOutMsg {
+    0% {
+        opacity: 1;
+        max-height: 100px;
+        padding: 6px 10px;
+        border: 1px solid rgb(247, 69, 69);
+        box-shadow: 0px 0px 8px 2px rgba(247, 30, 30, 0.5);
+        margin-bottom: 0px;
+    }
+    80% {
+        opacity: 1;
+        max-height: 100px;
+        padding: 6px 10px;
+        border: 1px solid rgb(247, 69, 69);
+        box-shadow: 0px 0px 8px 2px rgba(247, 30, 30, 0.5);
+        margin-bottom: 0px;
+    }
+    99% {
+        opacity: 0;
+        max-height: 0px;
+        padding: 0px 10px;
+        border: 0px solid transparent;
+        box-shadow: none;
+        margin-bottom: -15px; 
+    }
+    100% {
+        opacity: 0;
+        max-height: 0px;
+        padding: 0px 10px;
+        border: none;
+        box-shadow: none;
+        margin-bottom: 0px;
+    }
+}
+
+
+
 

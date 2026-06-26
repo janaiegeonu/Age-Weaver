@@ -18,30 +18,30 @@
              <form action="/auth/register" method="post">
                     <label><i>Name</i></label>
                     <div class="input-wrapper">
-                        <input name="username" type="text" id="name" placeholder="Enter name" required> 
+                        <input name="username" type="text" id="name" placeholder="Enter name" value="{{.Username}}" required> 
                         <img class="svg" src="/static/SVG/user.svg" alt="User icon">
                     
                     </div>
-                     <p class="error"> {{.UsernameError}}</p>
-                    <br><br>
+                     <p class="error toast-message "> {{.UsernameError}}</p>
+                    <br>
                      <label><i>Phone</i> </label>
                      <div class="input-wrapper">
-                     <input name="phone" type="text" id = "phone" placeholder="Enter phone number" required>
+                     <input name="phone" type="text" id = "phone" placeholder="Enter phone number" value="{{.Phone}}" required>
                     <img class="svg" src="/static/SVG/phone.svg" alt="User icon">
 
                      </div>
-                      <p class="error">{{.PhoneError}}</p>
-                    <br><br>
+                      <p class="error toast-message ">{{.PhoneError}}</p>
+                    <br>
                     <label><i>Email</i> </label>
                     <div class="input-wrapper">
-                    <input name="email" type="email" id = "email" placeholder="Enter email" required >
+                    <input name="email" type="email" id = "email" placeholder="Enter email" value="{{.Email}}" required >
                     <img class="svg" src="/static/SVG/email.svg" alt="User icon">
 
 
                     </div>
-                    <p class="error">{{.EmailError}}</p>
+                    <p class="error toast-message ">{{.EmailError}}</p>
                     
-                    <br><br>
+                    <br>
                      <label><i>Password</i></label>                       
                     <div class="input-wrapper">                     
                     <button type="button" id="toggle-password" class="toggle-btn" aria-label="Show password">
@@ -60,7 +60,7 @@
                     </div>
 
 
-                     <p class="error">{{.PasswordError}}</p>
+                     <p class="error toast-message ">{{.PasswordError}}</p>
                     <br><br>
                     <hr>
                     <button  class="subbutton" type="submit"> Create Account</button>

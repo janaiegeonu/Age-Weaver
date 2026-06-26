@@ -55,22 +55,11 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	type PageData struct {
-		Username string
-		Phone    string
-		Email    string
-		Password string
-
-		UsernameError error
-		PhoneError    error
-		EmailError    error
-		PasswordError error
-	}
 
 	UsernameData := r.FormValue("username")
 	phoneData := r.FormValue("phone")
 	EmailData := r.FormValue("email")
-	PasswordData := r.FormValue("password")
+	PasswordData := r.FormValue("pwd")
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(PasswordData), bcrypt.DefaultCost)
 	if err != nil {
@@ -85,24 +74,31 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		Password: string(hashedPassword),
 	}
 
-	var NameErr, EmailErr, PhoneErr, PasswordErr error
+	var nameErrStr, emailErrStr, phoneErrStr, passwordErrStr string
+	var hasError bool
+
 	_, err = form.ValidateName(UsernameData)
 	if err != nil {
-		NameErr = err
+		nameErrStr = err.Error()
+		hasError = true
 	}
 
 	_, err = form.ValidateEmail(EmailData)
 	if err != nil {
-		EmailErr = err
+		emailErrStr = err.Error()
+		hasError = true
 	}
 
 	_, err = form.ValidatePhone(phoneData)
 	if err != nil {
-		PhoneErr = err
+		phoneErrStr = err.Error()
+		hasError = true
 	}
+
 	_, err = form.ValidatePwd(PasswordData)
 	if err != nil {
-		PasswordErr = err
+		passwordErrStr = err.Error()
+		hasError = true
 	}
 
 	data := PageData{
@@ -111,17 +107,13 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		Email:    EmailData,
 		Password: PasswordData,
 
-		UsernameError: NameErr,
-		PhoneError:    PhoneErr,
-		EmailError:    EmailErr,
-		PasswordError: PasswordErr,
+		UsernameError: nameErrStr,
+		PhoneError:    phoneErrStr,
+		EmailError:    emailErrStr,
+		PasswordError: passwordErrStr,
 	}
 
-	if NameErr != nil ||
-		PhoneErr != nil ||
-		EmailErr != nil ||
-		PasswordErr != nil {
-
+	if hasError {
 		renderTemplate(w, "signIn.html", data)
 		return
 	}
@@ -131,6 +123,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "failed to save user", http.StatusInternalServerError)
 		return
 	}
+
 	User_Credentials := storage.User{
 		Username: details.Username,
 		Email:    details.Email,
@@ -152,7 +145,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	http.SetCookie(w, cookie)
 	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
-
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -289,7 +281,7 @@ func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
 	} else {
 
 		errordata := recoveryerror{
-			Error: "email credentials not found",
+			Error: "Email credentials not found",
 		}
 		renderTemplate(w, "forgottenPwd.html", errordata)
 	}
