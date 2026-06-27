@@ -316,6 +316,8 @@ func VerifyPin(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodGet {
 
+		renderTemplate(w, "code.html", nil)
+
 	}
 
 }

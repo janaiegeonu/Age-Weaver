@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age-Weaver/Login</title>
+
+  
+<link rel="stylesheet" href="/static/css/code.css?v=1.1"></head>
+<body>
+ <div class="container">
+     <h1 class="heading"> Email verification</h1>
+
+        <div class="login-module">
+
+            <div class="card">
+                <p class="signin">Enter your security code</p>
+                <div class="header-wrapper">
+                     <p class="header-txt"> We sent a 6-digit verification code to example@gmail.com</p>
+                <p class="header-txt1">Please enter the code below to confirm your identity.</p> 
+                </div>
+               
+              <form action="/login" method="post">                   
+            
+                    <div class="input-wrapper">
+                         <label>Enter Code:</label><br>
+                    <input name="code" type="text" id = "code" placeholder="******" required maxlength="6" >
+
+                    </div>
+                    
+                    <br><br>
+                   
+                    <hr>
+                      {{if .Error}}
+                    <p class="error toast-message">{{.Error}}</p>
+                    {{end}}
+                    <div class="footer-message">  
+                    <button  class="subbutton" type="submit"> Confirm</button>                     
+                     </div>
+                </form>
+            </div>
+            <div class="cardimg">              
+                <p class="imgtxt"> Almost there!</p>
+              
+                <p class="imgtxtsub"><em> Let's bring back your account..</em> </p>
+            </div> 
+        </div>
+    </div> 
+
+
+</body>
