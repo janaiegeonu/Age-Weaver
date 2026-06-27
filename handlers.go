@@ -48,13 +48,25 @@ func DisplaySignUp(w http.ResponseWriter, r *http.Request) {
 	}
 	renderTemplate(w, "signIn.html", nil)
 }
+
+type PageData struct {
+	Username string
+	Phone    string
+	Email    string
+	Password string
+
+	UsernameError string
+	PhoneError    string
+	EmailError    string
+	PasswordError string
+}
+
 func Register(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodPost {
 		http.Error(w, "Bad Method value", http.StatusMethodNotAllowed)
 		return
 	}
-
 
 	UsernameData := r.FormValue("username")
 	phoneData := r.FormValue("phone")
@@ -147,6 +159,10 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
+type Loginerror struct {
+	Error string
+}
+
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodGet {
@@ -201,8 +217,17 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 			return
 
+		} else {
+
+			errormessage := "Account not found please Signup"
+
+			data := Loginerror{
+				Error: errormessage,
+			}
+			renderTemplate(w, "login.html", data)
+
 		}
-		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+
 	}
 
 }

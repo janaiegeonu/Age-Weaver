@@ -29,7 +29,7 @@ body {
 .card {
     background: linear-gradient( to bottom, #6b55746b 0%, #15091d8a 100%);
     height: auto;
-    min-height: 380px;
+    min-height: 550px;
     width: 400px;
     min-width: 400px;
     display: flex; 
@@ -45,7 +45,7 @@ body {
 .cardimg {
     background-image: linear-gradient(rgba(0, 0, 0, 0.473), rgba(0,0,0,0.3)), url('/static/css/png/sidecardpx.png');
     height: auto;
-    min-height: 380px;
+    min-height: 550px;
     width: 400px;
     min-width: 400px;
     display: flex; 
@@ -138,6 +138,8 @@ input:hover {
 hr {
     color: rgb(52, 28, 70);
     width: 100%;
+    position: relative;
+    bottom: 20px;
 }
 .subbutton {
     width: 250px;
@@ -154,6 +156,7 @@ hr {
     border-color: rgba(245, 213, 245, 0.651);
     bottom: 10px;
     position: relative;
+    left: 19px;
 }
 
 .subbutton:hover {
@@ -164,6 +167,7 @@ hr {
         box-shadow: 0px 0px 8px 2px rgba(230, 93, 248, 0.281);
          bottom: 14px;
     position: relative;
+    
 
 
 
@@ -182,7 +186,8 @@ hr {
     color: white;
     border-color: rgba(245, 213, 245, 0.651);
     position: relative;
-    bottom: 17px;
+    top: -3px;
+    left: 35px;
    
 }
 
@@ -197,7 +202,8 @@ hr {
     color: #bfb3c4;
     font-size: 14px;
     position: relative;
-    bottom: 10px;
+    bottom: 3px;
+    left: 15px;
 }
 .footerlink {
     color: #773f8d;
@@ -261,3 +267,72 @@ hr {
     text-decoration: underline;
     text-transform: capitalize;
 }
+.footer-message{
+
+
+    position: relative;
+    top: 10px;
+}
+
+.error {
+    color: rgb(247, 69, 69);
+    background-color: transparent;
+    border: none;
+    padding: 0px 10px;
+    margin: 0;
+    font-size: 13px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: none;
+    
+    display: none;
+    max-height: 0px;
+    overflow: hidden;
+}
+
+
+.toast-message {
+    display: block !important; 
+    animation: fadeOutMsg 5s ease-in-out forwards;
+}
+
+
+.error:empty {
+    display: none !important;
+}
+
+@keyframes fadeOutMsg {
+    0% {
+        opacity: 1;
+        max-height: 100px;
+        padding: 6px 10px;
+        border: 1px solid rgb(247, 69, 69);
+        box-shadow: 0px 0px 8px 2px rgba(247, 30, 30, 0.5);
+        margin-bottom: 0px;
+    }
+    80% {
+        opacity: 1;
+        max-height: 100px;
+        padding: 6px 10px;
+        border: 1px solid rgb(247, 69, 69);
+        box-shadow: 0px 0px 8px 2px rgba(247, 30, 30, 0.5);
+        margin-bottom: 0px;
+    }
+    99% {
+        opacity: 0;
+        max-height: 0px;
+        padding: 0px 10px;
+        border: 0px solid transparent;
+        box-shadow: none;
+        margin-bottom: -15px; 
+    }
+    100% {
+        opacity: 0;
+        max-height: 0px;
+        padding: 0px 10px;
+        border: none;
+        box-shadow: none;
+        margin-bottom: -30px;
+    }
+}
+

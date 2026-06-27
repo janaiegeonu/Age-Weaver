@@ -265,18 +265,18 @@ hr {
 
 .toast-message {
     display: block !important; 
-    animation: fadeOutMsg 4s ease-in-out forwards;
+    animation: fadeOutMsg 6s ease-in-out forwards;
 }
 
 .error:empty {
-    display: none !important;
+    display: none !important;  
 }
 
 @keyframes fadeOutMsg {
     0% {
         opacity: 1;
         max-height: 20px;
-        margin-bottom: 0px;
+        margin-bottom: -10px;
     }
     80% {
         opacity: 1;
@@ -286,12 +286,12 @@ hr {
     99% {
         opacity: 0;
         max-height: 0px;
-        margin-bottom: -10px; 
+        margin-bottom: -30px; 
     }
     100% {
         opacity: 0;
         max-height: 0px;
-        margin-bottom: 0px;
+        margin-bottom: -30px;
         display: none;
     }
 }

@@ -158,7 +158,7 @@ hr {
     position: absolute;
     right: 8px;            
     top: 50%;             
-    transform: translateY(-50%);
+    transform: translateY(3%);
     pointer-events: none; 
      
 }
@@ -203,6 +203,8 @@ hr {
     display: none;
     max-height: 0px;
     overflow: hidden;
+    position: relative;
+    top: -5px;
 }
 
 
@@ -247,7 +249,7 @@ hr {
         padding: 0px 10px;
         border: none;
         box-shadow: none;
-        margin-bottom: 0px;
+        margin-bottom: -20px;
     }
 }
 

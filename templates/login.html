@@ -18,7 +18,7 @@
               <form action="/login" method="post">                   
                   <label><i>Email</i> </label>
                     <div class="input-wrapper">
-                    <input type="email" name = "email" placeholder="Enter email" required >
+                    <input name="email" type="email" id = "email" placeholder="Enter email" required >
                     <img class="svg" src="/static/SVG/email.svg" alt="User icon">
 
 
@@ -43,15 +43,18 @@
                     </div>
                     <a class="forgot" href="/forgot">forgotten password?</a>
 
-
-                    <br><br>
+                   
                     <hr>
+                      {{if .Error}}
+                    <p class="error toast-message">{{.Error}}</p>
+                    {{end}}
+                    <div class="footer-message">  
                     <button  class="subbutton" type="submit"> Login</button>
-                     <button  class="resbutton" type="reset"> reset</button>
+                     <button  class="resbutton" type="reset" id="resetBtn"> reset</button>
                      
                      <p class="footertxt"> Don't have an account? <a class="footerlink" href="/"> Sign Up </a></p>
 
-                    
+                     </div>
                 </form>
             </div>
             <div class="cardimg">              
@@ -91,5 +94,23 @@ togglePasswordButton.addEventListener('click', () => {
 
 
   </script>
+
+   <script>
+document.querySelector('form').addEventListener('reset', function(event) {
+  event.preventDefault();
+  
+  const inputs = this.querySelectorAll('input');
+  inputs.forEach(input => {
+    input.value = ''; 
+    input.removeAttribute('value'); 
+  });
+
+  const errorParagraphs = this.querySelectorAll('.error.toast-message');
+  errorParagraphs.forEach(p => {
+    p.textContent = '';
+  });
+});
+
+</script>
 
 </body>
