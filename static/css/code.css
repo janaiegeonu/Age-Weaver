@@ -217,7 +217,7 @@ hr {
 
 .toast-message {
     display: block !important; 
-    animation: fadeOutMsg 5s ease-in-out forwards;
+    animation: fadeOutMsg 1s ease-in-out forwards;
 }
 
 

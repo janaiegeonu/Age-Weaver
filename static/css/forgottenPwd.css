@@ -255,22 +255,23 @@ hr {
 
 
 .error1 {
-    color: rgb(63, 163, 79);
-    background-color: transparent;
-    border: none;
+    background-color: rgb(45, 126, 58);
+    color: azure;
+    border: 2px solid white;
     padding: 0px 10px;
-    margin: 0;
-    font-size: 13px;
+    margin: 15px auto 0 auto;
+    font-size: 14px;
+    font-weight: bold;
     text-align: center;
     border-radius: 20px;
     box-shadow: none;
+    width: fit-content;     
     
     display: none;
     max-height: 0px;
     overflow: hidden;
-    position: relative;
-    top: -5px;
 }
+
 
 
 .toast-message1 {

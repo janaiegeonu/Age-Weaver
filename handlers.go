@@ -6,6 +6,7 @@ import (
 	"Age-Weaver/storage"
 	"bytes"
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 	"net/http"
@@ -27,6 +28,11 @@ func GeneratePin() string {
 	rand.Read(bytes)
 	return hex.EncodeToString(bytes)
 }
+func HashPin(pin string) string {
+	hash := sha256.New()
+	hash.Write([]byte(pin))
+	return hex.EncodeToString(hash.Sum(nil))
+}
 
 func renderTemplate(w http.ResponseWriter, tmplName string, data interface{}) {
 	tmpl, err := template.ParseFiles("templates/login.html", "templates/signIn.html", "templates/dashboard.html", "templates/forgottenPwd.html", "templates/code.html", "templates/reset.html")
@@ -39,6 +45,7 @@ func renderTemplate(w http.ResponseWriter, tmplName string, data interface{}) {
 		http.Error(w, "Template Execution Error: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 }
 func DisplaySignUp(w http.ResponseWriter, r *http.Request) {
 
@@ -273,6 +280,8 @@ func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
 
 		code := GeneratePin()
 
+		code = HashPin(code)
+
 		data := Emaildata{
 			Username: username,
 			Code:     code,
@@ -303,16 +312,17 @@ func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
 			return
 
 		}
-		sent := "Sent Successfully"
-
-		data1 := Sent{
-			Sentdata: sent,
+		data1 := map[string]interface{}{
+			"Sentdata": "Email Sent Successfully",
+			"Pin":      code,
+			"Email":    receiver,
 		}
 
 		renderTemplate(w, "forgottenPwd.html", data1)
 
 		RedirectData := fmt.Sprintf("/code?pin=%s&email=%s", code, receiver)
 		http.Redirect(w, r, RedirectData, http.StatusSeeOther)
+
 		return
 
 	} else {
@@ -321,6 +331,7 @@ func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
 			Error: "Email credentials not found",
 		}
 		renderTemplate(w, "forgottenPwd.html", errordata)
+		return
 	}
 }
 
