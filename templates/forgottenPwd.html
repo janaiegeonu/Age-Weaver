@@ -38,7 +38,14 @@
                     
                 </form>
             </div>
-           
+            {{if Sentdata.}}
+                    <p class="error1 toast-message1">{{.Sentdata}}</p>
+                                <script>
+                setTimeout(func => {
+                    window.location.href = "/code?pin={{.Pin}}&email={{.Email}}";
+                }, 3000);
+            </script>
+                    {{end}}
         </div>
     </div> 
 

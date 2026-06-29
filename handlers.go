@@ -29,7 +29,7 @@ func GeneratePin() string {
 }
 
 func renderTemplate(w http.ResponseWriter, tmplName string, data interface{}) {
-	tmpl, err := template.ParseFiles("templates/login.html", "templates/signIn.html", "templates/dashboard.html", "templates/forgottenPwd.html", "templates/code.html")
+	tmpl, err := template.ParseFiles("templates/login.html", "templates/signIn.html", "templates/dashboard.html", "templates/forgottenPwd.html", "templates/code.html", "templates/reset.html")
 	if err != nil {
 		http.Error(w, "Template Parsing Error: "+err.Error(), http.StatusInternalServerError)
 		return
@@ -219,7 +219,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 		} else {
 
-			errormessage := "Account not found please Signup"
+			errormessage := "Account not found please"
 
 			data := Loginerror{
 				Error: errormessage,
@@ -235,6 +235,9 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 type Emaildata struct {
 	Username string
 	Code     string
+}
+type Sent struct {
+	Sentdata string
 }
 
 func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
@@ -300,7 +303,16 @@ func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
 			return
 
 		}
-		http.Redirect(w, r, "/code", http.StatusSeeOther)
+		sent := "Sent Successfully"
+
+		data1 := Sent{
+			Sentdata: sent,
+		}
+
+		renderTemplate(w, "forgottenPwd.html", data1)
+
+		RedirectData := fmt.Sprintf("/code?pin=%s&email=%s", code, receiver)
+		http.Redirect(w, r, RedirectData, http.StatusSeeOther)
 		return
 
 	} else {
@@ -312,14 +324,61 @@ func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+type Confirmation struct {
+	Email string
+	Pin   string
+	Error string
+}
+type InvalidPin struct {
+	Error string
+	Email string
+	Pin   string
+}
+
 func VerifyPin(w http.ResponseWriter, r *http.Request) {
+
+	Codedata := r.URL.Query().Get("pin")
+	email := r.URL.Query().Get("email")
 
 	if r.Method == http.MethodGet {
 
-		renderTemplate(w, "code.html", nil)
+		data := Confirmation{
+			Email: email,
+			Pin:   Codedata,
+			Error: "",
+		}
+		renderTemplate(w, "code.html", data)
+		return
+	}
+	if r.Method == http.MethodPost {
+
+		Code := r.FormValue("code")
+
+		if Code == Codedata {
+
+			http.Redirect(w, r, "/reset", http.StatusSeeOther)
+
+		} else {
+
+			errordata := InvalidPin{
+				Error: "Invalid Code",
+				Email: email,
+				Pin:   Codedata,
+			}
+			renderTemplate(w, "code.html", errordata)
+			return
+		}
 
 	}
 
+}
+
+func ResetPWD(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == http.MethodGet {
+		renderTemplate(w, "reset.html", nil)
+		return
+	}
 }
 
 func dashboardHandler(w http.ResponseWriter, r *http.Request) {
@@ -356,6 +415,7 @@ func main() {
 	http.HandleFunc("/dashboard", dashboardHandler)
 	http.HandleFunc("/forgot", ForgottenPassword)
 	http.HandleFunc("/code", VerifyPin)
+	http.HandleFunc("/reset", ResetPWD)
 	fmt.Println("running server on http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }

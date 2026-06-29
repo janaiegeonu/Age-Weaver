@@ -336,3 +336,12 @@ hr {
     }
 }
 
+.Signpop-up{
+    color: rgb(255, 40, 40);
+    text-decoration: none;
+}
+.Signpop-up:hover{
+    text-decoration: underline;
+    color: rgb(255, 125, 125);
+}
+

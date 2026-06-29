@@ -1,1 +1,7 @@
 "We sent a 6-digit verification code to example@gmail.com. Please enter the code below to confirm your identity."
+
+
+
+
+
+4f3a96

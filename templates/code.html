@@ -16,11 +16,11 @@
             <div class="card">
                 <p class="signin">Enter your security code</p>
                 <div class="header-wrapper">
-                     <p class="header-txt"> We sent a 6-digit verification code to example@gmail.com</p>
+                     <p class="header-txt"> We sent a 6-digit verification code to {{.Email}}</p>
                 <p class="header-txt1">Please enter the code below to confirm your identity.</p> 
                 </div>
                
-              <form action="/login" method="post">                   
+                  <form action="/code?pin={{.Pin}}&email={{.Email}}" method="post">
             
                     <div class="input-wrapper">
                          <label>Enter Code:</label><br>
@@ -37,6 +37,7 @@
                     <div class="footer-message">  
                     <button  class="subbutton" type="submit"> Confirm</button>                     
                      </div>
+                     <a class="footerlink" href="/forgot">Didn't receive an Email?</a>
                 </form>
             </div>
             <div class="cardimg">              
