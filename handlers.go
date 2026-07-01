@@ -248,7 +248,6 @@ type Sent struct {
 }
 
 func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
-
 	if r.Method == http.MethodGet {
 		renderTemplate(w, "forgottenPwd.html", nil)
 		return
@@ -270,17 +269,25 @@ func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
 			username = user.Username
 			break
 		}
-		if user.Email != email {
-
-		}
-
 	}
 
 	if Valid_Email {
-
 		code := GeneratePin()
 
-		code = HashPin(code)
+		hashCode, err := bcrypt.GenerateFromPassword([]byte(code), bcrypt.DefaultCost)
+		if err != nil {
+			http.Error(w, "Server error securing code", http.StatusInternalServerError)
+			return
+		}
+
+		details := storage.UserCode{
+			Email:    receiver,
+			Codedata: string(hashCode),
+		}
+		if err := storage.SaveCode(details); err != nil {
+			http.Error(w, "Server error saving code", http.StatusInternalServerError)
+			return
+		}
 
 		data := Emaildata{
 			Username: username,
@@ -299,10 +306,11 @@ func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Error executing template:", err)
 			return
 		}
+
 		m := mail.NewMessage()
 		m.SetHeader("From", "egeonujanai@gmail.com")
 		m.SetHeader("To", receiver)
-		m.SetHeader("Subject", " Age-Weaver (Confirmation Code)")
+		m.SetHeader("Subject", "Age-Weaver (Confirmation Code)")
 		m.SetBody("text/html", bodyBuffer.String())
 		d := mail.NewDialer("smtp.gmail.com", 587, "egeonujanai@gmail.com", "giwg nrsr xqui xfrq")
 
@@ -310,23 +318,13 @@ func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			http.Error(w, "email not sent ", 500)
 			return
-
-		}
-		data1 := map[string]interface{}{
-			"Sentdata": "Email Sent Successfully",
-			"Pin":      code,
-			"Email":    receiver,
 		}
 
-		renderTemplate(w, "forgottenPwd.html", data1)
-
-		RedirectData := fmt.Sprintf("/code?pin=%s&email=%s", code, receiver)
+		RedirectData := fmt.Sprintf("/code?email=%s", receiver)
 		http.Redirect(w, r, RedirectData, http.StatusSeeOther)
-
 		return
 
 	} else {
-
 		errordata := recoveryerror{
 			Error: "Email credentials not found",
 		}
@@ -346,42 +344,55 @@ type InvalidPin struct {
 	Pin   string
 }
 
-func VerifyPin(w http.ResponseWriter, r *http.Request) {
+type User_code struct {
+	Confirmation_Code string
+}
 
-	Codedata := r.URL.Query().Get("pin")
+func VerifyPin(w http.ResponseWriter, r *http.Request) {
 	email := r.URL.Query().Get("email")
 
 	if r.Method == http.MethodGet {
-
 		data := Confirmation{
 			Email: email,
-			Pin:   Codedata,
 			Error: "",
 		}
 		renderTemplate(w, "code.html", data)
 		return
 	}
+
 	if r.Method == http.MethodPost {
+		userEnteredCode := r.FormValue("code")
 
-		Code := r.FormValue("code")
+		err := storage.LoadCode()
+		if err != nil {
+			http.Error(w, "Internal server error", 500)
+			return
+		}
 
-		if Code == Codedata {
+		Codesent := false
+		for _, codeStorage := range storage.Code {
+			if codeStorage.Email == email {
+				err := bcrypt.CompareHashAndPassword([]byte(codeStorage.Codedata), []byte(userEnteredCode))
+				if err == nil {
+					Codesent = true
+					break
+				}
+			}
+		}
 
-			http.Redirect(w, r, "/reset", http.StatusSeeOther)
+		if Codesent {
 
+			http.Redirect(w, r, fmt.Sprintf("/reset?email=%s", email), http.StatusSeeOther)
+			return
 		} else {
-
 			errordata := InvalidPin{
 				Error: "Invalid Code",
 				Email: email,
-				Pin:   Codedata,
 			}
 			renderTemplate(w, "code.html", errordata)
 			return
 		}
-
 	}
-
 }
 
 func ResetPWD(w http.ResponseWriter, r *http.Request) {

@@ -1,7 +1,201 @@
-"We sent a 6-digit verification code to example@gmail.com. Please enter the code below to confirm your identity."
+package storage
+
+import (
+	"encoding/json"
+	"os"
+)
+
+type UserCode struct {
+	Email    string `json:"email"`    // Track who owns this code
+	Codedata string `json:"codedata"` // Storing the bcrypt hash
+}
+
+var Code []UserCode
+
+func LoadCode() error {
+	data, err := os.ReadFile("code.json")
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil
+		}
+		return err
+	}
+	if len(data) == 0 {
+		return nil
+	}
+	return json.Unmarshal(data, &Code)
+}
+
+func SaveCode(user UserCode) error {
+	// First load the existing codes from the file
+	err := LoadCode() 
+	if err != nil {
+		return err
+	}
+
+	// Optional: Remove any old codes for this specific email first
+	var updatedCodes []UserCode
+	for _, c := range Code {
+		if c.Email != user.Email {
+			updatedCodes = append(updatedCodes, c)
+		}
+	}
+	Code = updatedCodes
+
+	// Append the new one
+	Code = append(Code, user)
+
+	data, err := json.MarshalIndent(Code, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile("code.json", data, 0644)
+}
 
 
 
 
+func ForgottenPassword(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		renderTemplate(w, "forgottenPwd.html", nil)
+		return
+	}
 
-4f3a96
+	type recoveryerror struct {
+		Error string
+	}
+	email := r.FormValue("email")
+
+	var receiver string
+	var username string
+
+	Valid_Email := false
+	for _, user := range storage.Users {
+		if user.Email == email {
+			Valid_Email = true
+			receiver = user.Email
+			username = user.Username
+			break
+		}
+	}
+
+	if Valid_Email {
+		// 1. Generate raw plain text code
+		code := GeneratePin() 
+
+		// 2. Hash the raw code for database storage
+		hashCode, err := bcrypt.GenerateFromPassword([]byte(code), bcrypt.DefaultCost)
+		if err != nil {
+			http.Error(w, "Server error securing code", http.StatusInternalServerError)
+			return
+		}
+
+		// 3. Save the hash and email to your JSON file
+		details := storage.UserCode{
+			Email:    receiver,
+			Codedata: string(hashCode),
+		}
+		if err := storage.SaveCode(details); err != nil {
+			http.Error(w, "Server error saving code", http.StatusInternalServerError)
+			return
+		}
+
+		// 4. Send the PLAIN TEXT code to the user's email
+		data := Emaildata{
+			Username: username,
+			Code:     code, // DO NOT SEND hashCode HERE
+		}
+
+		tmpl, err := template.ParseFiles("templates/emailcode.html")
+		if err != nil {
+			fmt.Println("Error parsing template:", err)
+			http.Error(w, "Internal server error", 500)
+			return
+		}
+
+		var bodyBuffer bytes.Buffer
+		if err := tmpl.Execute(&bodyBuffer, data); err != nil {
+			fmt.Println("Error executing template:", err)
+			return
+		}
+
+		m := mail.NewMessage()
+		m.SetHeader("From", "egeonujanai@gmail.com")
+		m.SetHeader("To", receiver)
+		m.SetHeader("Subject", "Age-Weaver (Confirmation Code)")
+		m.SetBody("text/html", bodyBuffer.String())
+		d := mail.NewDialer("smtp.gmail.com", 587, "egeonujanai@gmail.com", "giwg nrsr xqui xfrq")
+
+		err = d.DialAndSend(m)
+		if err != nil {
+			http.Error(w, "email not sent ", 500)
+			return
+		}
+
+		// 5. Redirect using ONLY the email parameter for safety
+		RedirectData := fmt.Sprintf("/code?email=%s", receiver)
+		http.Redirect(w, r, RedirectData, http.StatusSeeOther)
+		return
+
+	} else {
+		errordata := recoveryerror{
+			Error: "Email credentials not found",
+		}
+		renderTemplate(w, "forgottenPwd.html", errordata)
+		return
+	}
+}
+
+
+
+func VerifyPin(w http.ResponseWriter, r *http.Request) {
+	email := r.URL.Query().Get("email")
+
+	if r.Method == http.MethodGet {
+		data := Confirmation{
+			Email: email,
+			Error: "",
+		}
+		renderTemplate(w, "code.html", data)
+		return
+	}
+
+	if r.Method == http.MethodPost {
+		userEnteredCode := r.FormValue("code") // Plain text typed by user
+
+		// Load codes fresh from JSON file
+		err := storage.LoadCode()
+		if err != nil {
+			http.Error(w, "Internal server error", 500)
+			return
+		}
+
+		Codesent := false
+		// Find the code that belongs to this specific email
+		for _, codeStorage := range storage.Code {
+			if codeStorage.Email == email {
+				// Compare stored hash against the user's plain text input
+				err := bcrypt.CompareHashAndPassword([]byte(codeStorage.Codedata), []byte(userEnteredCode))
+				if err == nil {
+					Codesent = true
+					break
+				}
+			}
+		}
+
+		if Codesent {
+			// Code matches! Proceed to password reset view.
+			// Pass the email over so the reset page knows whose password to change.
+			http.Redirect(w, r, fmt.Sprintf("/reset?email=%s", email), http.StatusSeeOther)
+			return
+		} else {
+			errordata := InvalidPin{
+				Error: "Invalid Code",
+				Email: email,
+			}
+			renderTemplate(w, "code.html", errordata)
+			return
+		}
+	}
+}

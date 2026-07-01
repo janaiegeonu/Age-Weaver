@@ -6,14 +6,13 @@ import (
 )
 
 type UserCode struct {
+	Email    string `json:"email"`
 	Codedata string `json:"codedata"`
 }
 
 var Code []UserCode
 
-
 func LoadCode() error {
-
 	data, err := os.ReadFile("code.json")
 	if err != nil {
 		if os.IsNotExist(err) {

@@ -6,11 +6,18 @@ import (
 )
 
 func SaveCode(user UserCode) error {
-
-	err := LoadData()
+	err := LoadCode()
 	if err != nil {
 		return err
 	}
+
+	var updatedCodes []UserCode
+	for _, c := range Code {
+		if c.Email != user.Email {
+			updatedCodes = append(updatedCodes, c)
+		}
+	}
+	Code = updatedCodes
 
 	Code = append(Code, user)
 
